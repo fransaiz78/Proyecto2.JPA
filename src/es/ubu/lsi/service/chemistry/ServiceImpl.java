@@ -26,7 +26,6 @@ public class ServiceImpl extends PersistenceService implements Service{
 
 	@Override
 	public void actualizarMolecula(String nombreMol, String simbolo, int numero) throws PersistenceException {
-		// TODO Auto-generated method stub
 		
 	}
 
