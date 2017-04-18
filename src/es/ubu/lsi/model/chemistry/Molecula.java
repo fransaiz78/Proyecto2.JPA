@@ -25,7 +25,7 @@ public class Molecula implements Serializable {
 
 	private String nombre;
 
-	private BigDecimal pesomolecular;
+	private int pesomolecular;
 
 	//bi-directional many-to-one association to Composicion
 	@OneToMany(mappedBy="molecula")
@@ -58,11 +58,11 @@ public class Molecula implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public BigDecimal getPesomolecular() {
+	public int getPesomolecular() {
 		return this.pesomolecular;
 	}
 
-	public void setPesomolecular(BigDecimal pesomolecular) {
+	public void setPesomolecular(int pesomolecular) {
 		this.pesomolecular = pesomolecular;
 	}
 
