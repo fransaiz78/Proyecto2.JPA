@@ -21,5 +21,7 @@ public class MoleculaDAO extends JpaDAO<Molecula, Integer> {
 	public MoleculaDAO(EntityManager em) {
 		super(em);
 	}
+	
+	
 
 }

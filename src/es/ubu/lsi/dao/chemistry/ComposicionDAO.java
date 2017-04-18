@@ -3,18 +3,16 @@
  */
 package es.ubu.lsi.dao.chemistry;
 
+import es.ubu.lsi.dao.JpaDAO;
+
 /**
  * @author Mario Santamaria
  * @author Francisco Saiz
  *
  */
-public class ComposicionDAO {
+public class ComposicionDAO{
 
-	/**
-	 * Constructor de la clase.
-	 */
-	public ComposicionDAO() {
-		// TODO Auto-generated constructor stub
-	}
+
+
 
 }

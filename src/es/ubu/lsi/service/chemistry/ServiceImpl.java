@@ -17,12 +17,10 @@ public class ServiceImpl extends PersistenceService implements Service{
 	 * 
 	 */
 	public ServiceImpl() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void insertarMolecula(String nombre, String[] simbolos, int[] numeros) throws PersistenceException {
-		// TODO Auto-generated method stub
 		
 	}
 

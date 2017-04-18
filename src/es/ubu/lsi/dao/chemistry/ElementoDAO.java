@@ -10,11 +10,4 @@ package es.ubu.lsi.dao.chemistry;
  */
 public class ElementoDAO {
 
-	/**
-	 * Constructor de la clase.
-	 */
-	public ElementoDAO() {
-		// TODO Auto-generated constructor stub
-	}
-
 }
