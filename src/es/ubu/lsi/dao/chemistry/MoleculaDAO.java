@@ -6,14 +6,14 @@ package es.ubu.lsi.dao.chemistry;
 import javax.persistence.EntityManager;
 
 import es.ubu.lsi.dao.JpaDAO;
-import es.ubu.lsi.model.chemistry.Molecula;
+import es.ubu.lsi.model.chemistry.Moleculas;
 
 /**
  * @author Mario Santamaria
  * @author Francisco Saiz
  *
  */
-public class MoleculaDAO extends JpaDAO<Molecula, Integer> {
+public class MoleculaDAO extends JpaDAO<Moleculas, Integer> {
 
 	/**
 	 * Constructor de la clase.
@@ -22,18 +22,18 @@ public class MoleculaDAO extends JpaDAO<Molecula, Integer> {
 		super(em);
 	}
 
-	public Molecula findMoleculaByNombre(String nombre) {
+	public Moleculas findMoleculaByNombre(String nombre) {
 		try {
-			return super.getEntityManager().createNamedQuery("molecula.findByNombre", Molecula.class)
+			return super.getEntityManager().createNamedQuery("Molecula.findByNombre", Moleculas.class)
 					.setParameter("nombre", nombre).getSingleResult();
 		} catch (javax.persistence.NoResultException e) {
 			return null;
 		}
 	}
 
-	public Molecula findMoleculaByFormula(String formula) {
+	public Moleculas findMoleculaByFormula(String formula) {
 		try {
-			return super.getEntityManager().createNamedQuery("molecula.findByFormula", Molecula.class)
+			return super.getEntityManager().createNamedQuery("Molecula.findByFormula", Moleculas.class)
 					.setParameter("formula", formula).getSingleResult();
 		} catch (javax.persistence.NoResultException e) {
 			return null;

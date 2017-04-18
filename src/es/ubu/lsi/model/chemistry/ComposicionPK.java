@@ -9,28 +9,36 @@ import javax.persistence.*;
  */
 @Embeddable
 public class ComposicionPK implements Serializable {
-	//default serial version id, required for serializable classes.
-	private static final long serialVersionUID = 1L;
+
 
 	@Column(insertable=false, updatable=false)
 	private String simbolo;
 
 	@Column(insertable=false, updatable=false)
-	private long idmolecula;
+	private Integer idMolecula;
 
+	//default serial version id, required for serializable classes.
+	private static final long serialVersionUID = 1L;
+	
 	public ComposicionPK() {
 	}
+	
+	public ComposicionPK(String simbolo, Integer idMolecula) {
+		this.simbolo = simbolo;
+		this.idMolecula = idMolecula;
+	}
+	
 	public String getSimbolo() {
 		return this.simbolo;
 	}
 	public void setSimbolo(String simbolo) {
 		this.simbolo = simbolo;
 	}
-	public long getIdmolecula() {
-		return this.idmolecula;
+	public long getIdMolecula() {
+		return this.idMolecula;
 	}
-	public void setIdmolecula(long idmolecula) {
-		this.idmolecula = idmolecula;
+	public void setIdMolecula(Integer idMolecula) {
+		this.idMolecula = idMolecula;
 	}
 
 	public boolean equals(Object other) {
@@ -43,14 +51,14 @@ public class ComposicionPK implements Serializable {
 		ComposicionPK castOther = (ComposicionPK)other;
 		return 
 			this.simbolo.equals(castOther.simbolo)
-			&& (this.idmolecula == castOther.idmolecula);
+			&& (this.idMolecula == castOther.idMolecula);
 	}
 
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
 		hash = hash * prime + this.simbolo.hashCode();
-		hash = hash * prime + ((int) (this.idmolecula ^ (this.idmolecula >>> 32)));
+		hash = hash * prime + ((int) (this.idMolecula ^ (this.idMolecula >>> 32)));
 		
 		return hash;
 	}

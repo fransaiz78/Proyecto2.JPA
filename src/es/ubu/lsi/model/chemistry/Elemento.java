@@ -23,7 +23,7 @@ public class Elemento implements Serializable {
 
 	private String nombre;
 
-	private int pesoatomico;
+	private Integer pesoatomico;
 
 	//bi-directional many-to-one association to Composicion
 	@OneToMany(mappedBy="elemento")
@@ -48,11 +48,11 @@ public class Elemento implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public int getPesoatomico() {
+	public int getPesoAtomico() {
 		return this.pesoatomico;
 	}
 
-	public void setPesoatomico(int pesoatomico) {
+	public void setPesoAtomico(Integer pesoatomico) {
 		this.pesoatomico = pesoatomico;
 	}
 

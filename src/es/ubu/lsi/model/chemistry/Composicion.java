@@ -17,7 +17,7 @@ public class Composicion implements Serializable {
 	@EmbeddedId
 	private ComposicionPK id;
 
-	private BigDecimal nroatomos;
+	private Integer nroatomos;
 
 	//bi-directional many-to-one association to Elemento
 	@ManyToOne
@@ -27,7 +27,7 @@ public class Composicion implements Serializable {
 	//bi-directional many-to-one association to Molecula
 	@ManyToOne
 	@JoinColumn(name="IDMOLECULA")
-	private Molecula molecula;
+	private Moleculas molecula;
 
 	public Composicion() {
 	}
@@ -40,11 +40,11 @@ public class Composicion implements Serializable {
 		this.id = id;
 	}
 
-	public BigDecimal getNroatomos() {
+	public Integer getNroAtomos() {
 		return this.nroatomos;
 	}
 
-	public void setNroatomos(BigDecimal nroatomos) {
+	public void setNroAtomos(Integer nroatomos) {
 		this.nroatomos = nroatomos;
 	}
 
@@ -56,12 +56,13 @@ public class Composicion implements Serializable {
 		this.elemento = elemento;
 	}
 
-	public Molecula getMolecula() {
+	public Moleculas getMolecula() {
 		return this.molecula;
 	}
 
-	public void setMolecula(Molecula molecula) {
+	public void setMolecula(Moleculas molecula) {
 		this.molecula = molecula;
 	}
+
 
 }

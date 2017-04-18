@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!-- Persistance de Felix. -->
-
 <persistence version="2.1"
 	xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
@@ -13,8 +11,7 @@
 		<class>es.ubu.lsi.model.chemistry.Composicion</class>
 		<class>es.ubu.lsi.model.chemistry.ComposicionPK</class>
 		<class>es.ubu.lsi.model.chemistry.Elemento</class>
-		<class>es.ubu.lsi.model.chemistry.Molecula</class>
-		
+		<class>es.ubu.lsi.model.chemistry.Moleculas</class>
 		<properties>
 			<!-- Configuration with Hibernate -->
 			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />

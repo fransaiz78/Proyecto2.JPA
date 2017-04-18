@@ -2,7 +2,6 @@ package es.ubu.lsi.model.chemistry;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -10,41 +9,39 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name = "MOLECULAS")
-@NamedQuery(name = "Molecula.findAll", query = "SELECT m FROM Molecula m")
 
-@NamedQueries({ @NamedQuery(name = "Molecula.findAll", query = "SELECT m FROM Molecula m"),
-
-		@NamedQuery(name = "Molecula.findByNombre", query = "SELECT m FROM Molecula m WHERE m.nombre = :nombre"),
-		@NamedQuery(name = "Molecula.findByFormula", query = "SELECT m FROM Molecula m WHERE m.formula = :formula"), 
+@NamedQueries({ @NamedQuery(name = "Moleculas.findAll", query = "SELECT m FROM Moleculas m"),
+		@NamedQuery(name = "Molecula.findAll", query = "SELECT m FROM Moleculas m"),
+		@NamedQuery(name = "Moleculas.findByNombre", query = "SELECT m FROM Moleculas m WHERE m.nombre = :nombre"),
+		@NamedQuery(name = "Moleculas.findByFormula", query = "SELECT m FROM Moleculas m WHERE m.formula = :formula"), 
 		})
 
-public class Molecula implements Serializable {
-	private static final long serialVersionUID = 1L;
-
-	@Id
-	@SequenceGenerator(name = "MOLECULAS_ID_GENERATOR")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MOLECULAS_ID_GENERATOR")
-	private long id;
+public class Moleculas implements Serializable {
+//	@Id
+//	@SequenceGenerator(name = "MOLECULAS_ID_GENERATOR")
+//	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MOLECULAS_ID_GENERATOR")
 	
+	@Id
+	@SequenceGenerator(name = "moleculasId_SEQ", sequenceName = "moleculasId_SEQ", allocationSize = 1)
+	@GeneratedValue(generator = "moleculasId_SEQ")
+	private Integer id;
 	private String nombre;
-
-	private int pesomolecular;
-
+	private Integer pesomolecular;
 	private String formula;
+	private static final long serialVersionUID = 1L;
 
 	// bi-directional many-to-one association to Composicion
 	@OneToMany(mappedBy = "molecula")
 	private List<Composicion> composicions;
 
-	public Molecula() {
+	public Moleculas() {
 	}
 
 	public long getId() {
 		return this.id;
 	}
 
-	public void setId(long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -64,11 +61,11 @@ public class Molecula implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public int getPesomolecular() {
+	public int getPesoMolecular() {
 		return this.pesomolecular;
 	}
 
-	public void setPesomolecular(int pesomolecular) {
+	public void setPesoMolecular(int pesomolecular) {
 		this.pesomolecular = pesomolecular;
 	}
 

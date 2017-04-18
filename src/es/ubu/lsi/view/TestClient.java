@@ -18,31 +18,44 @@ public class TestClient {
 	private static PoolDeConexiones pool;
 
 	public static void main(String[] args) throws NamingException, SQLException {
+
 		
+		try {
+			inicializaciones();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		Service servicio = new ServiceImp();
+
 		System.out.println("\n-----------------------------------------------------------------");
 		System.out.println("           - Bateria de pruebas para el caso de BORRAR -           ");
 		System.out.println("-----------------------------------------------------------------\n");
 		
 		try {
-			inicializaciones();
-			Service servicio = new ServiceImp();
-			/*----------------------------insertarMolecula(nombre, simbolos, nros)----------------------------*/
+			System.out.println("Borrar molecula con un ID existente: ");
+			servicio.borrarMolecula(1);
+			System.out.println("Existe molecula con ese id y se ha eliminado con exito.\n");
 
-			/* Prueba insertaMolécula correctamente */
-			try {
-				System.out.println("Borrar molecula por ID: ");
-				ExecuteScript.run(sqlScript);
-				servicio.borrarMolecula(555);
-				System.out.println("Todo OK.");
+		} catch (ChemistryException e) {
+			System.out.println(e.getError().toString() + ": " + e.getMessage() + ". ");
+			System.out.println("\nMAL -> La molecula no existe. \n");
+		} catch (PersistenceException e) {
+			System.out.println("MAL");
+			e.printStackTrace();
+		}
 
-			} catch (ChemistryException e) {
-				System.out.println(e.getError().toString() + ": " + e.getMessage());
-				System.out.println("MAL");
-			} catch (PersistenceException e) {
-				System.out.println("MAL");
-				e.printStackTrace();
-			}
-		} catch (IOException e) {
+
+		try {
+			System.out.println("Borrar molecula con un ID inexistente: ");
+			servicio.borrarMolecula(15);
+
+		} catch (ChemistryException e) {
+			System.out.println(e.getError().toString() + ": " + e.getMessage() + ". ");
+			System.out.println("\nMAL -> La molecula no existe. \n");
+		} catch (PersistenceException e) {
+			System.out.println("MAL");
 			e.printStackTrace();
 		}
 
@@ -51,6 +64,6 @@ public class TestClient {
 	public static void inicializaciones() throws NamingException, SQLException, IOException {
 		// Inicializacion de Pool
 		pool = PoolDeConexiones.getInstance();
-//		ExecuteScript.run(sqlScript);
+		ExecuteScript.run(sqlScript);
 	}
 }
