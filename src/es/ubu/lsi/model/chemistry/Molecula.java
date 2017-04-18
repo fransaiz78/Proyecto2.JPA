@@ -5,30 +5,36 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 
-
 /**
  * The persistent class for the MOLECULAS database table.
  * 
  */
 @Entity
-@Table(name="MOLECULAS")
-@NamedQuery(name="Molecula.findAll", query="SELECT m FROM Molecula m")
+@Table(name = "MOLECULAS")
+@NamedQuery(name = "Molecula.findAll", query = "SELECT m FROM Molecula m")
+
+@NamedQueries({ @NamedQuery(name = "Molecula.findAll", query = "SELECT m FROM Molecula m"),
+
+		@NamedQuery(name = "Molecula.findByNombre", query = "SELECT m FROM Molecula m WHERE m.nombre = :nombre"),
+		@NamedQuery(name = "Molecula.findByFormula", query = "SELECT m FROM Molecula m WHERE m.formula = :formula"), 
+		})
+
 public class Molecula implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="MOLECULAS_ID_GENERATOR" )
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="MOLECULAS_ID_GENERATOR")
+	@SequenceGenerator(name = "MOLECULAS_ID_GENERATOR")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MOLECULAS_ID_GENERATOR")
 	private long id;
-
-	private String formula;
-
+	
 	private String nombre;
 
 	private int pesomolecular;
 
-	//bi-directional many-to-one association to Composicion
-	@OneToMany(mappedBy="molecula")
+	private String formula;
+
+	// bi-directional many-to-one association to Composicion
+	@OneToMany(mappedBy = "molecula")
 	private List<Composicion> composicions;
 
 	public Molecula() {
