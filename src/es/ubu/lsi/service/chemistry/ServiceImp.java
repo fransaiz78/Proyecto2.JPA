@@ -52,6 +52,7 @@ public class ServiceImp extends PersistenceService implements Service {
 	public void borrarMolecula(int idMolecula) throws PersistenceException {
 
 		EntityManager em = null;
+//		EntityManager em = createSession();
 
 //		System.out.println("Vamos a borrar la molecula. ");
 		try {
@@ -62,14 +63,14 @@ public class ServiceImp extends PersistenceService implements Service {
 
 			// Comprobamos que el idMolecula corresponda a una molecula.
 			Moleculas molecula = null;
-			Composicion composicion = null;
+//			Composicion composicion = null;
 			MoleculaDAO moleculasDAO = new MoleculaDAO(em);
-			ComposicionDAO composicionDAO = new ComposicionDAO(em);
+//			ComposicionDAO composicionDAO = new ComposicionDAO(em);
 
 			//sacamos la molecula correspondiente al id. 
 			molecula = moleculasDAO.findById(idMolecula);
 			
-			composicion = (Composicion) composicionDAO.findById(idMolecula);
+//			composicion = (Composicion) composicionDAO.findById(idMolecula);
 			
 			// moleculaComp = composicionDAO.findById(idMolecula);
 			
@@ -83,7 +84,7 @@ public class ServiceImp extends PersistenceService implements Service {
 				logger.info("Comenzando la transaccion.");
 
 				moleculasDAO.remove(molecula);
-				composicionDAO.remove(composicion);
+//				composicionDAO.remove(composicion);
 //				moleculasDAO.persist(molecula);
 				
 				//No se eliminarlo de composicion.

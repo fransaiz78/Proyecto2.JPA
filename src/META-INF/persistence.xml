@@ -7,7 +7,7 @@
 		<!-- Hibernate provider -->
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 
-		<class>es.ubu.lsi.model.chemistry.Elementos</class>
+		<class>es.ubu.lsi.model.chemistry.Elemento</class>
 		<class>es.ubu.lsi.model.chemistry.Moleculas</class>
 		<class>es.ubu.lsi.model.chemistry.Composicion</class>
 		<class>es.ubu.lsi.model.chemistry.ComposicionPK</class>

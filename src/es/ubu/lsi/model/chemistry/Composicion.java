@@ -2,32 +2,31 @@ package es.ubu.lsi.model.chemistry;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.math.BigDecimal;
+
 
 /**
  * The persistent class for the COMPOSICION database table.
  * 
  */
 @Entity
-@NamedQueries({ 
-	@NamedQuery(name="Composicion.findAll", query="SELECT c FROM Composicion c"),
-	@NamedQuery(name = "Composicion.findByIdMolecula", query = "SELECT m FROM Composicion m WHERE m.id = :idMolecula"),
-	})
+@NamedQuery(name="Composicion.findAll", query="SELECT c FROM Composicion c")
 public class Composicion implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
 	private ComposicionPK id;
 
-	private Integer nroAtomos;
+	private Integer nroatomos;
 
 	//bi-directional many-to-one association to Elemento
 	@ManyToOne
-	@JoinColumn(name="simbolo")
-	private Elementos elemento;
+	@JoinColumn(name="SIMBOLO")
+	private Elemento elemento;
 
 	//bi-directional many-to-one association to Molecula
 	@ManyToOne
-	@JoinColumn(name="idMolecula")
+	@JoinColumn(name="IDMOLECULA")
 	private Moleculas molecula;
 
 	public Composicion() {
@@ -42,18 +41,18 @@ public class Composicion implements Serializable {
 	}
 
 	public Integer getNroAtomos() {
-		return this.nroAtomos;
+		return this.nroatomos;
 	}
 
 	public void setNroAtomos(Integer nroatomos) {
-		this.nroAtomos = nroatomos;
+		this.nroatomos = nroatomos;
 	}
 
-	public Elementos getElemento() {
+	public Elemento getElemento() {
 		return this.elemento;
 	}
 
-	public void setElemento(Elementos elemento) {
+	public void setElemento(Elemento elemento) {
 		this.elemento = elemento;
 	}
 

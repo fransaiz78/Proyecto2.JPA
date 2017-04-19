@@ -22,11 +22,8 @@ public class ComposicionDAO extends JpaDAO<Composicion, ComposicionPK> {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Object findById(int idMolecula) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
+	//NO SE SI ES NECESARIO ESTO.
 	public Composicion findMoleculaByNombre(Integer idMolecula) {
 		try {
 			return super.getEntityManager().createNamedQuery("Composicion.findByIdMolecula", Composicion.class)
