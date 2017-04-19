@@ -56,18 +56,20 @@ public class ServiceImp extends PersistenceService implements Service {
 //		System.out.println("Vamos a borrar la molecula. ");
 		try {
 			em = createSession();
+			System.out.println("Furrula.");
 			logger.info("Comenzando la transaccion.");
 			beginTransaction(em);
 
 			// Comprobamos que el idMolecula corresponda a una molecula.
 			Moleculas molecula = null;
-
+			Composicion composicion = null;
 			MoleculaDAO moleculasDAO = new MoleculaDAO(em);
 			ComposicionDAO composicionDAO = new ComposicionDAO(em);
 
 			//sacamos la molecula correspondiente al id. 
 			molecula = moleculasDAO.findById(idMolecula);
 			
+			composicion = (Composicion) composicionDAO.findById(idMolecula);
 			
 			// moleculaComp = composicionDAO.findById(idMolecula);
 			
@@ -81,7 +83,8 @@ public class ServiceImp extends PersistenceService implements Service {
 				logger.info("Comenzando la transaccion.");
 
 				moleculasDAO.remove(molecula);
-				moleculasDAO.persist(molecula);
+				composicionDAO.remove(composicion);
+//				moleculasDAO.persist(molecula);
 				
 				//No se eliminarlo de composicion.
 //				composicionDAO.remove(molecula);

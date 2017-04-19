@@ -32,7 +32,8 @@ public class TestClient {
 		System.out.println("\n-----------------------------------------------------------------");
 		System.out.println("           - Bateria de pruebas para el caso de BORRAR -           ");
 		System.out.println("-----------------------------------------------------------------\n");
-		
+
+
 		try {
 			System.out.println("Borrar molecula con un ID existente: ");
 			servicio.borrarMolecula(1);
@@ -47,17 +48,7 @@ public class TestClient {
 		}
 
 
-		try {
-			System.out.println("Borrar molecula con un ID inexistente: ");
-			servicio.borrarMolecula(15);
 
-		} catch (ChemistryException e) {
-			System.out.println(e.getError().toString() + ": " + e.getMessage() + ". ");
-			System.out.println("\nMAL -> La molecula no existe. \n");
-		} catch (PersistenceException e) {
-			System.out.println("MAL");
-			e.printStackTrace();
-		}
 
 	}
 

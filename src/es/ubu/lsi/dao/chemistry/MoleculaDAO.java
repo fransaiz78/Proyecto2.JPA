@@ -24,7 +24,7 @@ public class MoleculaDAO extends JpaDAO<Moleculas, Integer> {
 
 	public Moleculas findMoleculaByNombre(String nombre) {
 		try {
-			return super.getEntityManager().createNamedQuery("Molecula.findByNombre", Moleculas.class)
+			return super.getEntityManager().createNamedQuery("Moleculas.findByNombre", Moleculas.class)
 					.setParameter("nombre", nombre).getSingleResult();
 		} catch (javax.persistence.NoResultException e) {
 			return null;
@@ -33,7 +33,7 @@ public class MoleculaDAO extends JpaDAO<Moleculas, Integer> {
 
 	public Moleculas findMoleculaByFormula(String formula) {
 		try {
-			return super.getEntityManager().createNamedQuery("Molecula.findByFormula", Moleculas.class)
+			return super.getEntityManager().createNamedQuery("Moleculas.findByFormula", Moleculas.class)
 					.setParameter("formula", formula).getSingleResult();
 		} catch (javax.persistence.NoResultException e) {
 			return null;

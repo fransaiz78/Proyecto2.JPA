@@ -27,15 +27,15 @@ CREATE TABLE Composicion (
   FOREIGN KEY(IdMolecula) REFERENCES Moleculas(id)
 );
 
-CREATE SEQUENCE seq_molId; 
+--CREATE SEQUENCE seq_molId; 
 
 insert into Elementos(simbolo, nombre, pesoAtomico) values ('H','Hidrogeno', 1);
 insert into Elementos(simbolo, nombre, pesoAtomico) values('O','Oxigeno', 18);
 
-insert into Moleculas(id, nombre, pesoMolecular, formula) values(seq_molId.nextval, 'Agua', 20, 'H2O');
+insert into Moleculas(id, nombre, pesoMolecular, formula) values(1, 'Agua', 20, 'H2O');
 
-insert into Composicion(simbolo, idMolecula, nroAtomos) values('H', seq_molId.currval, 2);
-insert into Composicion(simbolo, idMolecula, nroAtomos) values('O', seq_molId.currval, 1);
+insert into Composicion(simbolo, idMolecula, nroAtomos) values('H', 1, 2);
+insert into Composicion(simbolo, idMolecula, nroAtomos) values('O', 1, 1);
 
 --select * from Moleculas
 --select * from Composicion
