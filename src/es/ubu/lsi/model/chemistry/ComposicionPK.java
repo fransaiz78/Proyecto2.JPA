@@ -11,6 +11,7 @@ import javax.persistence.*;
 public class ComposicionPK implements Serializable {
 
 
+	
 	@Column(insertable=false, updatable=false)
 	private String simbolo;
 
