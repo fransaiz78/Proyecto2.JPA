@@ -32,10 +32,15 @@ CREATE TABLE Composicion (
 insert into Elementos(simbolo, nombre, pesoAtomico) values ('H','Hidrogeno', 1);
 insert into Elementos(simbolo, nombre, pesoAtomico) values('O','Oxigeno', 18);
 
-insert into Moleculas(id, nombre, pesoMolecular, formula) values(1, 'Agua', 20, 'H2O');
+--insert into Moleculas(id, nombre, pesoMolecular, formula) values(1, 'Agua', 20, 'H2O');
 
-insert into Composicion(simbolo, idMolecula, nroAtomos) values('H', 1, 2);
-insert into Composicion(simbolo, idMolecula, nroAtomos) values('O', 1, 1);
+--insert into Composicion(simbolo, idMolecula, nroAtomos) values('H', 1, 2);
+--insert into Composicion(simbolo, idMolecula, nroAtomos) values('O', 1, 1);
+
+insert into Moleculas(id, nombre, pesoMolecular, formula) values(2, 'AguaOxigenada', 38, 'H2O2');
+
+insert into Composicion(simbolo, idMolecula, nroAtomos) values('H', 2, 2);
+insert into Composicion(simbolo, idMolecula, nroAtomos) values('O', 2, 2);
 
 --select * from Moleculas
 --select * from Composicion
