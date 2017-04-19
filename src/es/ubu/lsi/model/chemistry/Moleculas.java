@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 
 @NamedQueries({ @NamedQuery(name = "Moleculas.findAll", query = "SELECT m FROM Moleculas m"),
-		@NamedQuery(name = "Molecula.findAll", query = "SELECT m FROM Moleculas m"),
+//		@NamedQuery(name = "Molecula.findAll", query = "SELECT m FROM Moleculas m"),
 		@NamedQuery(name = "Moleculas.findByNombre", query = "SELECT m FROM Moleculas m WHERE m.nombre = :nombre"),
 		@NamedQuery(name = "Moleculas.findByFormula", query = "SELECT m FROM Moleculas m WHERE m.formula = :formula"), 
 		})

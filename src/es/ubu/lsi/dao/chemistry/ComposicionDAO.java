@@ -23,14 +23,14 @@ public class ComposicionDAO extends JpaDAO<Composicion, ComposicionPK> {
 	}
 
 	
-	//NO SE SI ES NECESARIO ESTO.
-	public Composicion findMoleculaByNombre(Integer idMolecula) {
-		try {
-			return super.getEntityManager().createNamedQuery("Composicion.findByIdMolecula", Composicion.class)
-					.setParameter("idMolecula", idMolecula).getSingleResult();
-		} catch (javax.persistence.NoResultException e) {
-			return null;
-		}
-	}
+//	//NO SE SI ES NECESARIO ESTO.
+//	public Composicion findMoleculaById(Integer idMolecula) {
+//		try {
+//			return super.getEntityManager().createNamedQuery("Composicion.findByIdMolecula", Composicion.class)
+//					.setParameter("idMolecula", idMolecula).getSingleResult();
+//		} catch (javax.persistence.NoResultException e) {
+//			return null;
+//		}
+//	}
 }
 

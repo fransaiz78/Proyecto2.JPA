@@ -3,6 +3,9 @@
  */
 package es.ubu.lsi.service.chemistry;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 
@@ -44,59 +47,65 @@ public class ServiceImp extends PersistenceService implements Service {
 
 	@Override
 	public void borrarMolecula(String nombre) throws PersistenceException {
-		// TODO Auto-generated method stub
 
+		EntityManager em = null;
+
+		try {
+			em = createSession();
+			logger.info("Comenzando la transaccion.");
+			beginTransaction(em);
+
+		} catch (EntityExistsException e) {
+			logger.error("La molecula ya existe.");
+			rollbackTransaction(em);
+			throw (new ChemistryException(ChemistryError.MOLECULA_YA_EXISTENTE));
+
+		} finally {
+			// Cerrando recursos
+			logger.info("Cerrando recursos.");
+			close(em);
+		}
+		
 	}
 
 	@Override
 	public void borrarMolecula(int idMolecula) throws PersistenceException {
 
 		EntityManager em = null;
-//		EntityManager em = createSession();
 
-//		System.out.println("Vamos a borrar la molecula. ");
 		try {
 			em = createSession();
-			System.out.println("Furrula.");
 			logger.info("Comenzando la transaccion.");
 			beginTransaction(em);
 
 			// Comprobamos que el idMolecula corresponda a una molecula.
-			Moleculas molecula = null;
-//			Composicion composicion = null;
 			MoleculaDAO moleculasDAO = new MoleculaDAO(em);
-//			ComposicionDAO composicionDAO = new ComposicionDAO(em);
+			ComposicionDAO composicionDAO = new ComposicionDAO(em);
 
 			//sacamos la molecula correspondiente al id. 
-			molecula = moleculasDAO.findById(idMolecula);
-			
-//			composicion = (Composicion) composicionDAO.findById(idMolecula);
-			
-			// moleculaComp = composicionDAO.findById(idMolecula);
-			
+			Moleculas molecula = moleculasDAO.findById(idMolecula);
+						
 			// Comprobamos que la molecula correspondiente a ese id es == null
 			if (molecula == null) {
-//				System.out.println("Esa molecula no existe. \n");
 				logger.error("La molecula no existe. Realizando rollback...");
 				rollbackTransaction(em);
 				throw (new ChemistryException(ChemistryError.NO_EXISTE_MOLECULA));
 			} else {
-				logger.info("Comenzando la transaccion.");
-
+				List<Composicion> lista = new ArrayList<Composicion>();
+				
+				lista = molecula.getComposicions();
+				
+				for (Composicion elem:lista){
+					composicionDAO.remove(elem);
+				}
+				
 				moleculasDAO.remove(molecula);
-//				composicionDAO.remove(composicion);
-//				moleculasDAO.persist(molecula);
-				
-				//No se eliminarlo de composicion.
-//				composicionDAO.remove(molecula);
-				
 
 				logger.info("Transaccion correcta. Realizando commit.");
 				commitTransaction(em);
 			}
 
 		} catch (EntityExistsException e) {
-			System.out.println("Casca");
 			// En el caso de que la molecula ya existe
 			logger.error("La molecula ya existe.");
 			rollbackTransaction(em);
