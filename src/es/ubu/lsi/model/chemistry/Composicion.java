@@ -20,11 +20,13 @@ public class Composicion implements Serializable {
 	private Integer nroatomos;
 
 	//bi-directional many-to-one association to Elemento
+	@MapsId("simbolo")//---------------------------------------------------Falta de realizar el mapeo. Asi terminamos de indicar que ese campo es el mismo.
 	@ManyToOne
 	@JoinColumn(name="SIMBOLO")
 	private Elemento elemento;
 
 	//bi-directional many-to-one association to Molecula
+	@MapsId("idMolecula")//---------------------------------------------------Falta de realizar el mapeo. Asi terminamos de indicar que ese campo es el mismo.
 	@ManyToOne
 	@JoinColumn(name="IDMOLECULA")
 	private Moleculas molecula;

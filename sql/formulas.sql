@@ -1,7 +1,7 @@
 DROP TABLE Elementos cascade constraint;
 DROP TABLE Moleculas cascade constraint;
 DROP TABLE Composicion cascade constraint;
-DROP SEQUENCE seq_molId;
+DROP SEQUENCE moleculasId_SEQ;
 
 CREATE TABLE Elementos (
   simbolo varchar(3),
@@ -27,7 +27,7 @@ CREATE TABLE Composicion (
   FOREIGN KEY(IdMolecula) REFERENCES Moleculas(id)
 );
 
---CREATE SEQUENCE seq_molId; 
+CREATE SEQUENCE moleculasId_SEQ; 
 
 insert into Elementos(simbolo, nombre, pesoAtomico) values ('H','Hidrogeno', 1);
 insert into Elementos(simbolo, nombre, pesoAtomico) values('O','Oxigeno', 18);

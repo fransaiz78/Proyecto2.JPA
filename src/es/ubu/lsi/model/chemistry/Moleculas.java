@@ -2,6 +2,8 @@ package es.ubu.lsi.model.chemistry;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,6 +37,7 @@ public class Moleculas implements Serializable {
 	private List<Composicion> composicions;
 
 	public Moleculas() {
+		composicions = new ArrayList<Composicion>();
 	}
 
 	public long getId() {

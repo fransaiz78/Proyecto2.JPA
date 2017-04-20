@@ -60,7 +60,6 @@ public class ServiceImp extends PersistenceService implements Service {
 			
 			String form = "";
 			int pesoTotal = 0;
-			int insertados = 0;
 			
 			for (int i = 0; i < simbolos.length; i++) {
 	
@@ -92,12 +91,14 @@ public class ServiceImp extends PersistenceService implements Service {
 			
 			//Insertamos la molecula.
 			Moleculas molFinal = new Moleculas();
-			molFinal.setId(1);
+//			molFinal.setId(1);
 			molFinal.setNombre(nombre);
 			molFinal.setPesoMolecular(pesoTotal);
 			molFinal.setFormula(form);
+			
+//			em.persist(molFinal);
 	
-			List<Composicion> listaComposiciones = new ArrayList<Composicion>();
+//			List<Composicion> listaComposiciones = new ArrayList<Composicion>();
 			
 			for (int i = 0; i < simbolos.length; i++) {
 				ComposicionPK composicionPK = new ComposicionPK(simbolos[i], 1);
@@ -110,15 +111,18 @@ public class ServiceImp extends PersistenceService implements Service {
 				composicion.setElemento(elemento);
 				composicion.setMolecula(molFinal);
 				composicion.setNroAtomos(numeros[i]);
-				
-//				em.persist(composicion);
-				
-				listaComposiciones.add(composicion);
+								
+//				listaComposiciones.add(composicion);
+				molFinal.addComposicion(composicion);
 			}
 			
-			molFinal.setComposicions(listaComposiciones);
+//			molFinal.setComposicions(listaComposiciones);
 			
 			em.persist(molFinal);
+			
+			for (Composicion composicion : molFinal.getComposicions()){
+				em.persist(composicion);
+			}
 						
 			logger.info("Transaccion correcta. Realizando commit.");
 			commitTransaction(em);
