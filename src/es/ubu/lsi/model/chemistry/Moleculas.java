@@ -40,7 +40,7 @@ public class Moleculas implements Serializable {
 		composicions = new ArrayList<Composicion>();
 	}
 
-	public long getId() {
+	public int getId() {
 		return this.id;
 	}
 

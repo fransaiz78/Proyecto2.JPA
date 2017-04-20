@@ -12,6 +12,7 @@ import es.ubu.lsi.service.chemistry.ServiceImp;
 import es.ubu.lsi.view.util.ExecuteScript;
 import es.ubu.lsi.view.util.PoolDeConexiones;
 
+
 public class TestClient {
 
 	static final String sqlScript = "./sql/formulas.sql";
@@ -51,38 +52,67 @@ public class TestClient {
 		
 		
 
-//		System.out.println("\n-----------------------------------------------------------------");
-//		System.out.println("           - Bateria de pruebas para el caso de BORRAR -           ");
-//		System.out.println("-----------------------------------------------------------------\n");
-//
-//
-//		try {
-//			System.out.println("Borrar molecula con un ID existente: ");
-//			servicio.borrarMolecula(1);
-//			System.out.println("Existe molecula con ese id y se ha eliminado con exito.\n");
-//
-//		} catch (ChemistryException e) {
-//			System.out.println(e.getError().toString() + ": " + e.getMessage() + ". ");
-//			System.out.println("\nMAL -> La molecula no existe. \n");
-//		} catch (PersistenceException e) {
-//			System.out.println("MAL");
-//			e.printStackTrace();
-//		}
-//		
-//		
-//		
-//		try {
-//			System.out.println("Borrar molecula con un nombre existente: ");
-//			servicio.borrarMolecula("AguaOxigenada");
-//			System.out.println("Existe molecula con ese nombre y se ha eliminado con exito.\n");
-//
-//		} catch (ChemistryException e) {
-//			System.out.println(e.getError().toString() + ": " + e.getMessage() + ". ");
-//			System.out.println("\nMAL -> La molecula no existe. \n");
-//		} catch (PersistenceException e) {
-//			System.out.println("MAL");
-//			e.printStackTrace();
-//		}
+		System.out.println("\n-----------------------------------------------------------------");
+		System.out.println("           - Bateria de pruebas para el caso de BORRAR -           ");
+		System.out.println("-----------------------------------------------------------------\n");
+
+
+		try {
+			servicio.borrarMolecula(1);
+			System.out.println("Borrar molecula mediante id se ha realizado con éxito.");
+
+		} catch (ChemistryException e) {
+			System.out.println(e.getError().toString() + ": " + e.getMessage() + ". ");
+			System.out.println("\nMAL -> La molecula no existe. \n");
+		} catch (PersistenceException e) {
+			System.out.println("MAL");
+			e.printStackTrace();
+		}
+		
+		
+		try {
+			servicio.borrarMolecula("AguaOxigenada");
+			System.out.println("Borrar molecula mediante nombre se ha realizado con éxito.");
+
+		} catch (ChemistryException e) {
+			System.out.println(e.getError().toString() + ": " + e.getMessage() + ". ");
+			System.out.println("\nMAL -> La molecula no existe. \n");
+		} catch (PersistenceException e) {
+			System.out.println("MAL");
+			e.printStackTrace();
+		}
+		
+		
+		
+		System.out.println("\n-----------------------------------------------------------------");
+		System.out.println("        - Bateria de pruebas para el caso de ACTUALIZAR -          ");
+		System.out.println("-----------------------------------------------------------------\n");
+		
+		try {
+			servicio.actualizarMolecula(1, "H", 4);
+			System.out.println("ActualizarMolecula mediante Id se ha realizado con éxito.");
+		} catch (ChemistryException e) {
+			System.out.println(e.getError().toString() + ": " + e.getMessage() + ". ");
+			System.out.println("\nMAL -> La molecula no existe. \n");
+		} catch (PersistenceException e) {
+			System.out.println("MAL");
+			e.printStackTrace();
+		}
+		
+		try {
+			servicio.actualizarMolecula("AguaOxigenada", "H", 4);
+			System.out.println("ActualizarMolecula mediante Id se ha realizado con éxito.");
+		} catch (ChemistryException e) {
+			System.out.println(e.getError().toString() + ": " + e.getMessage() + ". ");
+			System.out.println("\nMAL -> La molecula no existe. \n");
+		} catch (PersistenceException e) {
+			System.out.println("MAL");
+			e.printStackTrace();
+		}
+		
+		
+		
+		
 
 
 
