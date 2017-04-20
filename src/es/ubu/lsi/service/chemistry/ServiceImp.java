@@ -178,6 +178,7 @@ public class ServiceImp extends PersistenceService implements Service {
 			MoleculaDAO moleculaDAO = new MoleculaDAO(em);
 
 			Boolean existe = false;
+			Boolean contiene = false;
 
 			// Comprobar si existe una molecula con los parametros recibidos.
 
@@ -189,28 +190,30 @@ public class ServiceImp extends PersistenceService implements Service {
 				// Comprobamos si la molecula tiene ese simbolo
 				for (Composicion composicion : molecula.getComposicions()) {
 
-					if (composicion.getElemento().getSimbolo() == simbolo
-							&& composicion.getElemento().getPesoAtomico() == numero) {
-						// Ya existe una molecula con esas propiedades
-						existe = true;
+					if (composicion.getElemento().getSimbolo().equals(simbolo)) {
+						contiene = true;
+						if (composicion.getNroAtomos() == numero) {
+							existe = true;
+							logger.error("La formula actual es la misma que la inicial.");
+							rollbackTransaction(em);
+							throw (new ChemistryException(ChemistryError.MOLECULA_YA_EXISTENTE));
+						}
 					}
+
 				}
 
+			} else {
+				logger.error("No existe molecula con ese id.");
+				rollbackTransaction(em);
+				throw (new ChemistryException(ChemistryError.NO_EXISTE_MOLECULA));
 			}
 
 			// Si existe la molecula con ese simbolo
-			if (existe) {
+			if (contiene == false) {
 
-				// Comprobamos que excepcion lanzar.
-				if (molecula != null) {
-					logger.error("La molecula no contiene ese simbolo.");
-					rollbackTransaction(em);
-					throw (new ChemistryException(ChemistryError.MOLECULA_NO_CONTIENE_SIMBOLO));
-				} else {
-					logger.error("No existe molecula con ese id.");
-					rollbackTransaction(em);
-					throw (new ChemistryException(ChemistryError.NO_EXISTE_MOLECULA));
-				}
+				logger.error("La molecula no contiene ese simbolo.");
+				rollbackTransaction(em);
+				throw (new ChemistryException(ChemistryError.MOLECULA_NO_CONTIENE_SIMBOLO));
 
 			} else {
 				// Hacemos el cambio.
@@ -218,12 +221,9 @@ public class ServiceImp extends PersistenceService implements Service {
 				// Obtenemos la formula original.
 				String formulaOriginal = molecula.getFormula();
 
-				System.out.println("Formula Original: " + formulaOriginal);
-
 				// Actualizamos el numero de atomos en composicion.
 				for (Composicion composicion : molecula.getComposicions()) {
 					if (composicion.getElemento().getSimbolo().equals(simbolo)) {
-						System.out.println("Actualizamos en composicion el numero de atomos");
 						composicion.setNroAtomos(numero);
 					}
 				}
@@ -245,7 +245,7 @@ public class ServiceImp extends PersistenceService implements Service {
 					molecula.setFormula(formulaNueva);
 					molecula.setPesoMolecular(pesoAtomNuevo);
 				} else {
-					logger.error("La molecula no contiene ese simbolo.");
+					logger.error("La formula actual es la misma que la inicial.");
 					rollbackTransaction(em);
 					throw (new ChemistryException(ChemistryError.FORMULA_YA_EXISTENTE));
 				}
@@ -259,7 +259,9 @@ public class ServiceImp extends PersistenceService implements Service {
 				commitTransaction(em);
 			}
 
-		} catch (EntityExistsException e) {
+		} catch (
+
+		EntityExistsException e) {
 			logger.error("La molecula ya existe.");
 			rollbackTransaction(em);
 			throw (new ChemistryException(ChemistryError.MOLECULA_YA_EXISTENTE));
@@ -285,6 +287,12 @@ public class ServiceImp extends PersistenceService implements Service {
 
 			// sacamos la molecula correspondiente al id.
 			Moleculas molecula = moleculasDAO.findMoleculaByNombre(nombre);
+
+			if (molecula == null) {
+				logger.error("No existe la molecula.");
+				rollbackTransaction(em);
+				throw (new ChemistryException(ChemistryError.NO_EXISTE_MOLECULA));
+			}
 
 			int id = molecula.getId();
 
