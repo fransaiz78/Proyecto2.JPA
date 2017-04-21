@@ -32,6 +32,7 @@ public class Composicion implements Serializable {
 	private Moleculas molecula;
 
 	public Composicion() {
+		super();
 	}
 
 	public ComposicionPK getId() {

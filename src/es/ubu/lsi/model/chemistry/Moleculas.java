@@ -13,24 +13,20 @@ import java.util.List;
 @Entity
 
 @NamedQueries({ @NamedQuery(name = "Moleculas.findAll", query = "SELECT m FROM Moleculas m"),
-//		@NamedQuery(name = "Molecula.findAll", query = "SELECT m FROM Moleculas m"),
 		@NamedQuery(name = "Moleculas.findByNombre", query = "SELECT m FROM Moleculas m WHERE m.nombre = :nombre"),
 		@NamedQuery(name = "Moleculas.findByFormula", query = "SELECT m FROM Moleculas m WHERE m.formula = :formula"), 
 		})
 
 public class Moleculas implements Serializable {
-//	@Id
-//	@SequenceGenerator(name = "MOLECULAS_ID_GENERATOR")
-//	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MOLECULAS_ID_GENERATOR")
+	private static final long serialVersionUID = 1L;
 	
-	@Id
 	@SequenceGenerator(name = "moleculasId_SEQ", sequenceName = "moleculasId_SEQ", allocationSize = 1)
+	@Id
 	@GeneratedValue(generator = "moleculasId_SEQ")
 	private Integer id;
 	private String nombre;
 	private Integer pesomolecular;
 	private String formula;
-	private static final long serialVersionUID = 1L;
 
 	// bi-directional many-to-one association to Composicion
 	@OneToMany(mappedBy = "molecula")
@@ -76,9 +72,9 @@ public class Moleculas implements Serializable {
 		return this.composicions;
 	}
 
-	public void setComposicions(List<Composicion> composicions) {
-		this.composicions = composicions;
-	}
+//	public void setComposicions(List<Composicion> composicions) {
+//		this.composicions = composicions;
+//	}
 
 	public Composicion addComposicion(Composicion composicion) {
 		getComposicions().add(composicion);
@@ -87,11 +83,11 @@ public class Moleculas implements Serializable {
 		return composicion;
 	}
 
-	public Composicion removeComposicion(Composicion composicion) {
-		getComposicions().remove(composicion);
-		composicion.setMolecula(null);
-
-		return composicion;
-	}
+//	public Composicion removeComposicion(Composicion composicion) {
+//		getComposicions().remove(composicion);
+//		composicion.setMolecula(null);
+//
+//		return composicion;
+//	}
 
 }

@@ -32,15 +32,10 @@ CREATE SEQUENCE moleculasId_SEQ;
 insert into Elementos(simbolo, nombre, pesoAtomico) values ('H','Hidrogeno', 1);
 insert into Elementos(simbolo, nombre, pesoAtomico) values('O','Oxigeno', 18);
 
---insert into Moleculas(id, nombre, pesoMolecular, formula) values(1, 'Agua', 20, 'H2O');
-
---insert into Composicion(simbolo, idMolecula, nroAtomos) values('H', 1, 2);
---insert into Composicion(simbolo, idMolecula, nroAtomos) values('O', 1, 1);
-
-insert into Moleculas(id, nombre, pesoMolecular, formula) values(moleculasId_SEQ.nextval, 'AguaOxigenada', 38, 'H2O2');
+insert into Moleculas(id, nombre, pesoMolecular, formula) values(moleculasId_SEQ.nextval, 'Agua', 18, 'H2O');
 
 insert into Composicion(simbolo, idMolecula, nroAtomos) values('H', moleculasId_SEQ.currval, 2);
-insert into Composicion(simbolo, idMolecula, nroAtomos) values('O', moleculasId_SEQ.currval, 2);
+insert into Composicion(simbolo, idMolecula, nroAtomos) values('O', moleculasId_SEQ.currval, 1);
 
 --select * from Moleculas
 --select * from Composicion

@@ -11,14 +11,12 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="ELEMENTOS")
+@Table(name="ELEMENTOS") //Indicar que en el sql la tabla se llama Elementos.
 @NamedQuery(name="Elemento.findAll", query="SELECT e FROM Elemento e")
 public class Elemento implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-//	@SequenceGenerator(name="ELEMENTOS_SIMBOLO_GENERATOR" )
-//	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ELEMENTOS_SIMBOLO_GENERATOR")
 	private String simbolo;
 
 	private String nombre;

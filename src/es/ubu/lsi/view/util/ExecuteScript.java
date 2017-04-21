@@ -3,6 +3,9 @@ package es.ubu.lsi.view.util;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Execute script.
  * 
@@ -11,6 +14,11 @@ import java.io.InputStreamReader;
  * @since 1.1
  */
 public class ExecuteScript {
+	
+	/**
+	 * Obtenemos el logger
+	 */
+	private static Logger l = LoggerFactory.getLogger(ExecuteScript.class);;
 	
 	/**
 	 * Database user (schema).
@@ -47,7 +55,8 @@ public class ExecuteScript {
 			BufferedReader input = new BufferedReader(new InputStreamReader(
 					p.getInputStream()));
 			while ((line = input.readLine()) != null) {
-				System.out.println(line);
+//				System.out.println(line);
+				l.debug(line);
 			}
 			input.close();
 			p.destroy();
