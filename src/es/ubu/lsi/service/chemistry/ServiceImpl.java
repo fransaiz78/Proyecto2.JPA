@@ -24,6 +24,8 @@ import es.ubu.lsi.service.PersistenceException;
 import es.ubu.lsi.service.PersistenceService;
 
 /**
+ * Clase ServiceImpl.
+ * 
  * @author Mario Santamaria
  * @author Francisco Saiz
  *
@@ -136,12 +138,26 @@ public class ServiceImpl extends PersistenceService implements Service {
 //
 //	}
 	
+	/**
+	 * Método que inserta una molecula conociendo su nombre y su composición.
+	 * 
+	 * @param nombre
+	 *            String que representa el nombre
+	 * @param simbolos
+	 *            Array de String que contiene los simbolos
+	 * @param numeros
+	 *            Array de int que contiene los nros
+	 * @throws ChemistryException
+	 *             Excepcion
+	 * @throws PersistenceException
+	 *             Excepcion
+	 */
 	@Override
 	public void insertarMolecula(String nombre, String[] simbolos, int[] numeros)
 			throws PersistenceException, ChemistryException {
 		EntityManager em = null;
 
-		// Comprobamos que el numero de simbolos y numeros sean iguales
+		// Se comprueba que el numero de simbolos y de numeros son iguales
 		if (simbolos.length != numeros.length) {
 			logger.error("El numero de simbolos y numeros no coincide. Realizando rollback.");
 			throw (new ChemistryException(ChemistryError.TAMAÑOS_INADECUADOS));
@@ -152,7 +168,7 @@ public class ServiceImpl extends PersistenceService implements Service {
 			logger.info("Comenzando la transaccion.");
 			beginTransaction(em);
 
-			// Comprobamos si la molecula ya existe en la tabla de moleculas
+			// Se comprueba si la molecula ya existe en la tabla de moleculas
 			MoleculaDAO moleculaDAO = new MoleculaDAO(em);
 			if (moleculaDAO.findMoleculaByNombre(nombre) != null) {
 				logger.error("El nombre de la molecula ya existe. Realizando rollback.");
@@ -162,13 +178,13 @@ public class ServiceImpl extends PersistenceService implements Service {
 
 			ElementoDAO elementoDAO = new ElementoDAO(em);
 
-			// Calculamos el peso molecular y la formula
+			// Se calcula el peso molecular y la formula
 			int pesoMolecular = 0;
 			String[] formula = new String[simbolos.length];
 			Elemento elem;
 			for (int i = 0; i < simbolos.length; i++) {
 				elem = elementoDAO.findById(simbolos[i]);
-				// comprobamos que el atomo esta en la tabla de elementos
+				// Se comprueba que el atomo esta en la tabla de elementos
 				if (elem != null) {
 					pesoMolecular += elem.getPesoAtomico() * numeros[i];
 
@@ -191,7 +207,7 @@ public class ServiceImpl extends PersistenceService implements Service {
 				formulaOrdenada += formula[i];
 			}
 
-			// Comprobamos si la hay alguna molecula con esa formula en la tabla
+			// Se comprueba si ya hay alguna molecula con esa formula en la tabla
 			// de moleculas
 			if (moleculaDAO.findMoleculaByFormula(formulaOrdenada) != null) {
 				logger.error("La formula ya existe en la tabla de moleculas. Realizando rollback.");
@@ -199,13 +215,13 @@ public class ServiceImpl extends PersistenceService implements Service {
 				throw (new ChemistryException(ChemistryError.MOLECULA_YA_EXISTENTE));
 			}
 
-			// Creamos la nueva molecula
+			// Se crea la nueva molecula
 			Moleculas molecula = new Moleculas();
 			molecula.setFormula(formulaOrdenada);
 			molecula.setNombre(nombre);
 			molecula.setPesoMolecular(pesoMolecular);
 			
-			// Creamos los nuevos elementos de la tabla composicion
+			// Se crean los nuevos elementos de la tabla composicion
 			for (int i = 0; i < simbolos.length; i++) {
 				Composicion comp = new Composicion();
 				elem = elementoDAO.findById(simbolos[i]);
@@ -215,7 +231,7 @@ public class ServiceImpl extends PersistenceService implements Service {
 				comp.setMolecula(molecula);
 				comp.setElemento(elem);
 				
-				// Asociamos la composicion con la molecula
+				// Se asocia la composicion con la molecula
 				molecula.addComposicion(comp);
 			}
 			
@@ -229,7 +245,7 @@ public class ServiceImpl extends PersistenceService implements Service {
 			commitTransaction(em);
 
 		} catch (EntityExistsException e) {
-			// En el caso de que la molecula ya existe
+			// En el caso de molecula ya existente
 			logger.error("La molecula ya existe. Realizando rollback.");
 			rollbackTransaction(em);
 			throw (new ChemistryException(ChemistryError.MOLECULA_YA_EXISTENTE));
@@ -240,6 +256,18 @@ public class ServiceImpl extends PersistenceService implements Service {
 		}
 	}
 
+	/**
+	 * Actualiza la información de una molecula mediante el nombre.
+	 * 
+	 * @param nombreMol
+	 *            String que representa el nombre de la molecula
+	 * @param simbolo
+	 *            String que representa el simbolo
+	 * @param numero
+	 *            Entero que representa el nro
+	 * @throws PersistenceException
+	 *             Excepcion
+	 */
 	@Override
 	public void actualizarMolecula(String nombreMol, String simbolo, int numero) throws PersistenceException {
 		EntityManager em = null;
@@ -251,7 +279,7 @@ public class ServiceImpl extends PersistenceService implements Service {
 
 			MoleculaDAO moleculasDAO = new MoleculaDAO(em);
 
-			// sacamos la molecula correspondiente al id.
+			// Se identifica la molecula correspondiente al id.
 			Moleculas molecula = moleculasDAO.findMoleculaByNombre(nombreMol);
 
 			int id = molecula.getId();
@@ -270,6 +298,19 @@ public class ServiceImpl extends PersistenceService implements Service {
 		}
 	}
 
+	/**
+	 * Actualiza la información de una molecula mediante el ID.
+	 * 
+	 * @param id
+	 *            Entero que representa el id
+	 * @param simbolo
+	 *            String que representa el simbolo
+	 * @param numero
+	 *            Entero que representa el nro
+	 * 
+	 * @throws PersistenceException
+	 *             Excepcion
+	 */
 	@Override
 	public void actualizarMolecula(int id, String simbolo, int numero) throws PersistenceException {
 
@@ -285,14 +326,14 @@ public class ServiceImpl extends PersistenceService implements Service {
 			Boolean existe = false;
 			Boolean contiene = false;
 
-			// Comprobar si existe una molecula con los parametros recibidos.
+			// Se comprueba si existe una molecula con los parametros recibidos.
 
-			// Comprobamos si existe una molecula con ese id
+			// Se comprueba si existe una molecula con ese id
 			Moleculas molecula = moleculaDAO.findById(id);
 
 			if (molecula != null) { // ------------------------------OPTIMIZAR----------------------------------
 
-				// Comprobamos si la molecula tiene ese simbolo
+				// Se comprueba si la molecula tiene ese simbolo
 				for (Composicion composicion : molecula.getComposicions()) {
 
 					if (composicion.getElemento().getSimbolo().equals(simbolo)) {
@@ -321,19 +362,19 @@ public class ServiceImpl extends PersistenceService implements Service {
 				throw (new ChemistryException(ChemistryError.MOLECULA_NO_CONTIENE_SIMBOLO));
 
 			} else {
-				// Hacemos el cambio.
+				// Se realiza el cambio.
 
-				// Obtenemos la formula original.
+				// Se obtiene la formula original.
 				String formulaOriginal = molecula.getFormula();
 
-				// Actualizamos el numero de atomos en composicion.
+				// Se actualiza el numero de atomos en composicion.
 				for (Composicion composicion : molecula.getComposicions()) {
 					if (composicion.getElemento().getSimbolo().equals(simbolo)) {
 						composicion.setNroAtomos(numero);
 					}
 				}
 
-				// Calculamos el nuevo peso y la nueva formula.
+				// Se calcula el nuevo peso y la nueva formula.
 				int pesoAtomNuevo = 0;
 				String formulaNueva = "";
 
@@ -345,7 +386,7 @@ public class ServiceImpl extends PersistenceService implements Service {
 					}
 				}
 
-				// Comprobar que la formula nueva y la anterior son diferentes:
+				// Se comprueba que la formula nueva y la anterior son diferentes
 				if (formulaNueva != formulaOriginal) {
 					molecula.setFormula(formulaNueva);
 					molecula.setPesoMolecular(pesoAtomNuevo);
@@ -378,6 +419,14 @@ public class ServiceImpl extends PersistenceService implements Service {
 		}
 	}
 
+	/**
+	 * Borra una molecula mediante el nombre.
+	 * 
+	 * @param nombre
+	 *            String que representa el nombre
+	 * @throws PersistenceException
+	 *             Excepcion
+	 */
 	@Override
 	public void borrarMolecula(String nombre) throws PersistenceException {
 
@@ -390,7 +439,7 @@ public class ServiceImpl extends PersistenceService implements Service {
 
 			MoleculaDAO moleculasDAO = new MoleculaDAO(em);
 
-			// sacamos la molecula correspondiente al id.
+			// Se obtiene la molecula correspondiente al id.
 			Moleculas molecula = moleculasDAO.findMoleculaByNombre(nombre);
 
 			if (molecula == null) {
@@ -416,6 +465,14 @@ public class ServiceImpl extends PersistenceService implements Service {
 
 	}
 
+	/**
+	 * Borra una molecula mediante el id.
+	 * 
+	 * @param idMolecula
+	 *            Entero que representa el id
+	 * @throws PersistenceException
+	 *             Excepcion
+	 */
 	@Override
 	public void borrarMolecula(int idMolecula) throws PersistenceException {
 
@@ -429,10 +486,10 @@ public class ServiceImpl extends PersistenceService implements Service {
 			MoleculaDAO moleculasDAO = new MoleculaDAO(em);
 			ComposicionDAO composicionDAO = new ComposicionDAO(em);
 
-			// sacamos la molecula correspondiente al id.
+			// Se obtiene la molecula correspondiente al id.
 			Moleculas molecula = moleculasDAO.findById(idMolecula);
 
-			// Comprobamos que la molecula correspondiente a ese id es == null
+			// Se comprueba que la molecula correspondiente a ese id es == null
 			if (molecula == null) {
 				logger.error("La molecula no existe. Realizando rollback...");
 				rollbackTransaction(em);
@@ -440,7 +497,7 @@ public class ServiceImpl extends PersistenceService implements Service {
 			} else {
 				List<Composicion> lista = new ArrayList<Composicion>();
 
-				// Obtenemos las composiciones asociadas a la molecula.
+				// Se obtiene las composiciones asociadas a la molecula.
 				lista = molecula.getComposicions();
 
 				for (Composicion elem : lista) {

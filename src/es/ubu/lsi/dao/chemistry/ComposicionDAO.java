@@ -11,18 +11,23 @@ import es.ubu.lsi.model.chemistry.ComposicionPK;
 import es.ubu.lsi.model.chemistry.Moleculas;
 
 /**
+ * Clase ComposicionDAO.
+ * 
  * @author Mario Santamaria
  * @author Francisco Saiz
  *
  */
 public class ComposicionDAO extends JpaDAO<Composicion, ComposicionPK> {
 
+	/**
+	 * Constructor de la clase.
+	 * 
+	 * @param em
+	 *            EntityManager
+	 */
 	public ComposicionDAO(EntityManager em) {
 		super(em);
 		// TODO Auto-generated constructor stub
 	}
 
-	
-
 }
-

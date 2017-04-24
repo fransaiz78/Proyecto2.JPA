@@ -14,11 +14,28 @@ import es.ubu.lsi.view.util.ExecuteScript;
 import es.ubu.lsi.view.util.PoolDeConexiones;
 import es.ubu.lsi.service.chemistry.*;
 
+/**
+ * Clase TestClient donde se realizan las pruebas correspondientes.
+ * 
+ * @author Mario Santamaria
+ * @author Francisco Saiz
+ *
+ */
 public class TestClient {
 
 	static final String scriptSQL = "./sql/formulas.sql";
 	private static PoolDeConexiones pool;
 
+	/**
+	 * Main donde se realizaran las inicializaciones y la bateria de pruebas.
+	 * 
+	 * @param args
+	 *            Argumentos
+	 * @throws NamingException
+	 *             Excepcion
+	 * @throws SQLException
+	 *             Excepcion
+	 */
 	public static void main(String[] args) throws NamingException, SQLException {
 
 		try {
@@ -322,15 +339,25 @@ public class TestClient {
 
 		} catch (IOException e1) {
 			e1.printStackTrace();
-			
-		} finally{
-			
-			//Cerramos recursos
+
+		} finally {
+
+			// Cerramos recursos
 			PersistenceFactorySingleton.close();
 		}
 
 	}
 
+	/**
+	 * Metodo que realiza las inicializaciones correspondientes.
+	 * 
+	 * @throws NamingException
+	 *             Excepcion
+	 * @throws SQLException
+	 *             Excepcion
+	 * @throws IOException
+	 *             Excepcion
+	 */
 	public static void inicializaciones() throws NamingException, SQLException, IOException {
 		// Inicializacion de Pool
 		pool = PoolDeConexiones.getInstance();
