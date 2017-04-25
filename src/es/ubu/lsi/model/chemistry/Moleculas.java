@@ -33,10 +33,11 @@ public class Moleculas implements Serializable {
 	private List<Composicion> composicions;
 
 	public Moleculas() {
+		super();
 		composicions = new ArrayList<Composicion>();
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
@@ -60,11 +61,11 @@ public class Moleculas implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public int getPesoMolecular() {
+	public Integer getPesoMolecular() {
 		return this.pesomolecular;
 	}
 
-	public void setPesoMolecular(int pesomolecular) {
+	public void setPesoMolecular(Integer pesomolecular) {
 		this.pesomolecular = pesomolecular;
 	}
 

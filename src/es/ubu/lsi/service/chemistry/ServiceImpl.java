@@ -35,109 +35,6 @@ public class ServiceImpl extends PersistenceService implements Service {
 	// Inicializacion del Logger
 	private static Logger logger = LoggerFactory.getLogger(ServiceImpl.class);
 
-//	@Override
-//	public void insertarMolecula(String nombre, String[] simbolos, int[] numeros) throws PersistenceException {
-//
-//		EntityManager em = null;
-//
-//		try {
-//			em = createSession();
-//			logger.info("Comenzando la transaccion.");
-//			beginTransaction(em);
-//
-//			// ---------------------------ComprobacionesPrevias-------------------------------------//
-//			// Comprobamos si ambos arrays son del mismo tamaño.
-//			if (simbolos.length != numeros.length) {
-//				rollbackTransaction(em);
-//				throw (new ChemistryException(ChemistryError.TAMAÑOS_INADECUADOS));
-//			}
-//
-//			MoleculaDAO moleculasDAO = new MoleculaDAO(em);
-//
-//			// Comprobamos si existe una molecula con ese nombre.
-//			if (moleculasDAO.findMoleculaByNombre(nombre) != null) {
-//				rollbackTransaction(em);
-//				throw (new ChemistryException(ChemistryError.NOMBRE_DE_MOLECULA_YA_EXISTENTE));
-//			}
-//
-//			String form = "";
-//			int pesoTotal = 0;
-//
-//			for (int i = 0; i < simbolos.length; i++) {
-//
-//				ElementoDAO elementoDao = new ElementoDAO(em);
-//				Elemento elemento = elementoDao.findById(simbolos[i]);
-//				if (elemento == null) {
-//					rollbackTransaction(em);
-//					throw (new ChemistryException(ChemistryError.NO_EXISTE_ATOMO));
-//				}
-//
-//				// Calculamos el pesoMolecular
-//				pesoTotal += numeros[i] * elemento.getPesoAtomico();
-//
-//				// Calculamos la formula.
-//				form = form.concat(simbolos[i]);
-//
-//				if (numeros[i] > 1) {
-//					form = form.concat("" + numeros[i]);
-//				}
-//
-//			}
-//
-//			// Comprobamos si existe una molecula con esa formula.
-//			if (moleculasDAO.findMoleculaByFormula(form) != null) {
-//				rollbackTransaction(em);
-//				throw (new ChemistryException(ChemistryError.FORMULA_YA_EXISTENTE));
-//			}
-//			// -------------------------------------------------------------------------------------------------------------------//
-//
-//			// Insertamos la molecula.
-//			Moleculas molFinal = new Moleculas();
-//			// El id no lo insertamos porque automaticamente, nos coge el de la
-//			// secuencia.
-//			molFinal.setNombre(nombre);
-//			molFinal.setPesoMolecular(pesoTotal);
-//			molFinal.setFormula(form);
-//
-//			for (int i = 0; i < simbolos.length; i++) {
-//				
-//				ComposicionPK composicionPK = new ComposicionPK(simbolos[i], molFinal.getId());
-//				
-//				Composicion composicion = new Composicion();
-//
-//				ElementoDAO elementoDao = new ElementoDAO(em);
-//				Elemento elemento = elementoDao.findById(simbolos[i]);
-//
-//				composicion.setId(composicionPK);
-//				composicion.setElemento(elemento);
-//				composicion.setMolecula(molFinal);
-//				composicion.setNroAtomos(numeros[i]);
-//
-//				molFinal.addComposicion(composicion);
-//			}
-//
-//			em.persist(molFinal);
-//
-//			for (Composicion composicion : molFinal.getComposicions()) {
-//				em.persist(composicion);
-//			}
-//
-//			logger.info("Transaccion correcta. Realizando commit.");
-//			commitTransaction(em);
-//
-//		} catch (EntityExistsException e) {
-//			logger.error("La molecula ya existe.");
-//			rollbackTransaction(em);
-//			throw (new ChemistryException(ChemistryError.MOLECULA_YA_EXISTENTE));
-//
-//		} finally {
-//			// Cerrando recursos
-//			logger.info("Cerrando recursos.");
-//			close(em);
-//		}
-//
-//	}
-	
 	/**
 	 * Método que inserta una molecula conociendo su nombre y su composición.
 	 * 
@@ -152,92 +49,96 @@ public class ServiceImpl extends PersistenceService implements Service {
 	 * @throws PersistenceException
 	 *             Excepcion
 	 */
+	
 	@Override
-	public void insertarMolecula(String nombre, String[] simbolos, int[] numeros)
-			throws PersistenceException, ChemistryException {
-		EntityManager em = null;
+	public void insertarMolecula(String nombre, String[] simbolos, int[] numeros) throws PersistenceException {
 
-		// Se comprueba que el numero de simbolos y de numeros son iguales
-		if (simbolos.length != numeros.length) {
-			logger.error("El numero de simbolos y numeros no coincide. Realizando rollback.");
-			throw (new ChemistryException(ChemistryError.TAMAÑOS_INADECUADOS));
-		}
+		EntityManager em = null;
 
 		try {
 			em = createSession();
 			logger.info("Comenzando la transaccion.");
 			beginTransaction(em);
 
-			// Se comprueba si la molecula ya existe en la tabla de moleculas
-			MoleculaDAO moleculaDAO = new MoleculaDAO(em);
-			if (moleculaDAO.findMoleculaByNombre(nombre) != null) {
-				logger.error("El nombre de la molecula ya existe. Realizando rollback.");
+			// ---------------------------ComprobacionesPrevias-------------------------------------//
+			// Se comprueba si ambos arrays son del mismo tamaño.
+			if (simbolos.length != numeros.length) {
+				rollbackTransaction(em);
+				throw (new ChemistryException(ChemistryError.TAMAÑOS_INADECUADOS));
+			}
+
+			MoleculaDAO moleculasDAO = new MoleculaDAO(em);
+
+			// Se comprueba si existe una molecula con ese nombre.
+			if (moleculasDAO.findMoleculaByNombre(nombre) != null) {
 				rollbackTransaction(em);
 				throw (new ChemistryException(ChemistryError.NOMBRE_DE_MOLECULA_YA_EXISTENTE));
 			}
 
-			ElementoDAO elementoDAO = new ElementoDAO(em);
-
-			// Se calcula el peso molecular y la formula
-			int pesoMolecular = 0;
 			String[] formula = new String[simbolos.length];
-			Elemento elem;
-			for (int i = 0; i < simbolos.length; i++) {
-				elem = elementoDAO.findById(simbolos[i]);
-				// Se comprueba que el atomo esta en la tabla de elementos
-				if (elem != null) {
-					pesoMolecular += elem.getPesoAtomico() * numeros[i];
+			int pesoTotal = 0;
 
-					// TODO ordenar alfabeticamente los simbolos en la formula
-					if (numeros[i] == 1) {
-						formula[i] = simbolos[i];
-					} else {
-						formula[i] = simbolos[i] + numeros[i];
-					}
-				} else {
-					logger.error("El atomo no existe en la tabla de elementos. Realizando rollback.");
+			for (int i = 0; i < simbolos.length; i++) {
+
+				ElementoDAO elementoDao = new ElementoDAO(em);
+				Elemento elemento = elementoDao.findById(simbolos[i]);
+				if (elemento == null) {
 					rollbackTransaction(em);
 					throw (new ChemistryException(ChemistryError.NO_EXISTE_ATOMO));
 				}
+
+				// Se calcula el pesoMolecular
+				pesoTotal += numeros[i] * elemento.getPesoAtomico();
+				
+				// Se ordenan alfabeticamente los simbolos en la formula
+				if (numeros[i] != 1) {
+					formula[i] = simbolos[i] + numeros[i];
+				} else {
+					formula[i] = simbolos[i];
+				}
+
 			}
 			
 			Arrays.sort(formula);
-			String formulaOrdenada = "";
+			String formOrdenada = "";
 			for(int i = 0; i < formula.length; i++){
-				formulaOrdenada += formula[i];
+				formOrdenada += formula[i];
 			}
 
-			// Se comprueba si ya hay alguna molecula con esa formula en la tabla
-			// de moleculas
-			if (moleculaDAO.findMoleculaByFormula(formulaOrdenada) != null) {
-				logger.error("La formula ya existe en la tabla de moleculas. Realizando rollback.");
+			// Se comprueba si existe una molecula con esa formula.
+			if (moleculasDAO.findMoleculaByFormula(formOrdenada) != null) {
 				rollbackTransaction(em);
-				throw (new ChemistryException(ChemistryError.MOLECULA_YA_EXISTENTE));
+				throw (new ChemistryException(ChemistryError.FORMULA_YA_EXISTENTE));
+			}
+			// -------------------------------------------------------------------------------------------------------------------//
+
+			// Se inserta la molecula.
+			Moleculas molFinal = new Moleculas();
+
+			molFinal.setNombre(nombre);
+			molFinal.setPesoMolecular(pesoTotal);
+			molFinal.setFormula(formOrdenada);
+
+			for (int i = 0; i < simbolos.length; i++) {
+				
+				ComposicionPK composicionPK = new ComposicionPK(simbolos[i], molFinal.getId());
+				
+				Composicion composicion = new Composicion();
+
+				ElementoDAO elementoDao = new ElementoDAO(em);
+				Elemento elemento = elementoDao.findById(simbolos[i]);
+
+				composicion.setId(composicionPK);
+				composicion.setElemento(elemento);
+				composicion.setMolecula(molFinal);
+				composicion.setNroAtomos(numeros[i]);
+
+				molFinal.addComposicion(composicion);
 			}
 
-			// Se crea la nueva molecula
-			Moleculas molecula = new Moleculas();
-			molecula.setFormula(formulaOrdenada);
-			molecula.setNombre(nombre);
-			molecula.setPesoMolecular(pesoMolecular);
-			
-			// Se crean los nuevos elementos de la tabla composicion
-			for (int i = 0; i < simbolos.length; i++) {
-				Composicion comp = new Composicion();
-				elem = elementoDAO.findById(simbolos[i]);
-//				comp.setId(new ComposicionPK(simbolos[i], molecula.getId()));
-				comp.setId(new ComposicionPK(simbolos[i], 1));
-				comp.setNroAtomos(numeros[i]);
-				comp.setMolecula(molecula);
-				comp.setElemento(elem);
-				
-				// Se asocia la composicion con la molecula
-				molecula.addComposicion(comp);
-			}
-			
-			em.persist(molecula);
-			
-			for(Composicion composicion : molecula.getComposicions()){
+			em.persist(molFinal);
+
+			for (Composicion composicion : molFinal.getComposicions()) {
 				em.persist(composicion);
 			}
 
@@ -245,16 +146,18 @@ public class ServiceImpl extends PersistenceService implements Service {
 			commitTransaction(em);
 
 		} catch (EntityExistsException e) {
-			// En el caso de molecula ya existente
-			logger.error("La molecula ya existe. Realizando rollback.");
+			logger.error("La molecula ya existe.");
 			rollbackTransaction(em);
 			throw (new ChemistryException(ChemistryError.MOLECULA_YA_EXISTENTE));
+
 		} finally {
 			// Cerrando recursos
 			logger.info("Cerrando recursos.");
 			close(em);
 		}
+
 	}
+	
 
 	/**
 	 * Actualiza la información de una molecula mediante el nombre.

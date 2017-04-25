@@ -21,7 +21,7 @@ import es.ubu.lsi.service.chemistry.*;
  * @author Francisco Saiz
  *
  */
-public class TestClient {
+public class TestClientBateriaPruebas {
 
 	static final String scriptSQL = "./sql/formulas.sql";
 	private static PoolDeConexiones pool;
@@ -73,7 +73,7 @@ public class TestClient {
 				System.out.println("Insertar molecula Agua se ha realizado con éxito.");
 
 			} catch (ChemistryException e) {
-				if (e.getError() == ChemistryError.MOLECULA_YA_EXISTENTE) {
+				if (e.getError() == ChemistryError.FORMULA_YA_EXISTENTE) {
 					System.out.println("Insertar molecula con formula existente. OK. ");
 
 				} else {
@@ -125,7 +125,7 @@ public class TestClient {
 				System.out.println("Insertar molecula se ha realizado con éxito.");
 
 			} catch (ChemistryException e) {
-				if (e.getError() == ChemistryError.MOLECULA_YA_EXISTENTE) {
+				if (e.getError() == ChemistryError.FORMULA_YA_EXISTENTE) {
 					System.out.println("Insertar molecula con formula existente. OK. ");
 				} else {
 					System.out.println("Insertar molecula con formula existente. MAL. ");
