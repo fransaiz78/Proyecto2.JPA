@@ -26,7 +26,7 @@ import es.ubu.lsi.service.chemistry.*;
  * @author Francisco Saiz Güemes
  *
  */
-public class TestClientBateriaPruebas {
+public class TestClient {
 
 	static final String scriptSQL = "./sql/formulas.sql";
 	private static PoolDeConexiones pool;
