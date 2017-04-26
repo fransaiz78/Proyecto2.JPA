@@ -225,7 +225,6 @@ public class ServiceImpl extends PersistenceService implements Service {
 
 			MoleculaDAO moleculaDAO = new MoleculaDAO(em);
 
-			Boolean existe = false;
 			Boolean contiene = false;
 
 			// Se comprueba si existe una molecula con los parametros recibidos.
@@ -241,7 +240,6 @@ public class ServiceImpl extends PersistenceService implements Service {
 					if (composicion.getElemento().getSimbolo().equals(simbolo)) {
 						contiene = true;
 						if (composicion.getNroAtomos() == numero) {
-							existe = true;
 							logger.error("La formula actual es la misma que la inicial.");
 							rollbackTransaction(em);
 							throw (new ChemistryException(ChemistryError.MOLECULA_YA_EXISTENTE));
