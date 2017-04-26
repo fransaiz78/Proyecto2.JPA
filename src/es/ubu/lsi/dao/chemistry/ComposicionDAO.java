@@ -13,8 +13,8 @@ import es.ubu.lsi.model.chemistry.Moleculas;
 /**
  * Clase ComposicionDAO.
  * 
- * @author Mario Santamaria
- * @author Francisco Saiz
+ * @author Mario Santamaría Arias
+ * @author Francisco Saiz Güemes
  *
  */
 public class ComposicionDAO extends JpaDAO<Composicion, ComposicionPK> {

@@ -11,8 +11,8 @@ import es.ubu.lsi.model.chemistry.Elemento;
 /**
  * Clase ElementoDAO.
  * 
- * @author Mario Santamaria
- * @author Francisco Saiz
+ * @author Mario Santamaría Arias
+ * @author Francisco Saiz Güemes
  *
  */
 public class ElementoDAO extends JpaDAO<Elemento, String> {

@@ -11,21 +11,27 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Jesús Maudes
  * @author Raúl Marticorena
+ * 
+ *         Modificados ciertos parametros y funcionamiento por:
+ * 
+ * @author Mario Santamaría Arias
+ * @author Francisco Saiz Güemes
+ * 
  * @since 1.1
  */
 public class ExecuteScript {
-	
+
 	/**
 	 * Obtenemos el logger
 	 */
 	private static Logger l = LoggerFactory.getLogger(ExecuteScript.class);;
-	
+
 	/**
 	 * Database user (schema).
 	 */
 	private static final String USER = "HR";
-	// WARNING: review with your current DB 
-	
+	// WARNING: review with your current DB
+
 	/**
 	 * Database password user.
 	 */
@@ -35,7 +41,8 @@ public class ExecuteScript {
 	/**
 	 * Main.
 	 * 
-	 * @param args arguments
+	 * @param args
+	 *            arguments
 	 */
 	public static void main(String[] args) {
 		run(args[0]);
@@ -44,18 +51,18 @@ public class ExecuteScript {
 	/**
 	 * Run script.
 	 * 
-	 * @param file_name script path
+	 * @param file_name
+	 *            script path
 	 */
 	public static void run(String file_name) {
 		try {
 			String line;
-			//No te olvides de hacer que el script acabe con "exit;"
 			Process p = Runtime.getRuntime().exec("sqlplus " + USER + "/" + PASSWORD + " @" + file_name);
-			
-			BufferedReader input = new BufferedReader(new InputStreamReader(
-					p.getInputStream()));
+
+			BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			while ((line = input.readLine()) != null) {
-//				System.out.println(line);
+				// System.out.println(line); 
+				//Para evitar que salga toda la ejecucion del script por pantalla.
 				l.debug(line);
 			}
 			input.close();

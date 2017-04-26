@@ -9,17 +9,18 @@ import java.util.List;
 /**
  * The persistent class for the MOLECULAS database table.
  * 
+ * @author Mario Santamaría Arias
+ * @author Francisco Saiz Güemes
  */
 @Entity
 
 @NamedQueries({ @NamedQuery(name = "Moleculas.findAll", query = "SELECT m FROM Moleculas m"),
 		@NamedQuery(name = "Moleculas.findByNombre", query = "SELECT m FROM Moleculas m WHERE m.nombre = :nombre"),
-		@NamedQuery(name = "Moleculas.findByFormula", query = "SELECT m FROM Moleculas m WHERE m.formula = :formula"), 
-		})
+		@NamedQuery(name = "Moleculas.findByFormula", query = "SELECT m FROM Moleculas m WHERE m.formula = :formula"), })
 
 public class Moleculas implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@SequenceGenerator(name = "moleculasId_SEQ", sequenceName = "moleculasId_SEQ", allocationSize = 1)
 	@Id
 	@GeneratedValue(generator = "moleculasId_SEQ")
@@ -73,9 +74,9 @@ public class Moleculas implements Serializable {
 		return this.composicions;
 	}
 
-//	public void setComposicions(List<Composicion> composicions) {
-//		this.composicions = composicions;
-//	}
+	// public void setComposicions(List<Composicion> composicions) {
+	// this.composicions = composicions;
+	// }
 
 	public Composicion addComposicion(Composicion composicion) {
 		getComposicions().add(composicion);
@@ -84,11 +85,11 @@ public class Moleculas implements Serializable {
 		return composicion;
 	}
 
-//	public Composicion removeComposicion(Composicion composicion) {
-//		getComposicions().remove(composicion);
-//		composicion.setMolecula(null);
-//
-//		return composicion;
-//	}
+	// public Composicion removeComposicion(Composicion composicion) {
+	// getComposicions().remove(composicion);
+	// composicion.setMolecula(null);
+	//
+	// return composicion;
+	// }
 
 }

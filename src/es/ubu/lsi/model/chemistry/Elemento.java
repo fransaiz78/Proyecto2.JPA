@@ -2,17 +2,17 @@ package es.ubu.lsi.model.chemistry;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.List;
-
 
 /**
  * The persistent class for the ELEMENTOS database table.
  * 
+ * @author Mario Santamaría Arias
+ * @author Francisco Saiz Güemes
  */
 @Entity
-@Table(name="ELEMENTOS") //Indicar que en el sql la tabla se llama Elementos.
-@NamedQuery(name="Elemento.findAll", query="SELECT e FROM Elemento e")
+@Table(name = "ELEMENTOS") // Indicar que en el sql la tabla se llama Elementos.
+@NamedQuery(name = "Elemento.findAll", query = "SELECT e FROM Elemento e")
 public class Elemento implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -23,8 +23,8 @@ public class Elemento implements Serializable {
 
 	private Integer pesoatomico;
 
-	//bi-directional many-to-one association to Composicion
-	@OneToMany(mappedBy="elemento")
+	// bi-directional many-to-one association to Composicion
+	@OneToMany(mappedBy = "elemento")
 	private List<Composicion> composicions;
 
 	public Elemento() {

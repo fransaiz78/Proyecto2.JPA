@@ -24,10 +24,10 @@ import es.ubu.lsi.service.PersistenceException;
 import es.ubu.lsi.service.PersistenceService;
 
 /**
- * Clase ServiceImpl.
+ * Clase ServiceImpl. Implementa las diferentes transacciones.
  * 
- * @author Mario Santamaria
- * @author Francisco Saiz
+ * @author Mario Santamaría Arias
+ * @author Francisco Saiz Güemes
  *
  */
 public class ServiceImpl extends PersistenceService implements Service {
@@ -49,7 +49,7 @@ public class ServiceImpl extends PersistenceService implements Service {
 	 * @throws PersistenceException
 	 *             Excepcion
 	 */
-	
+
 	@Override
 	public void insertarMolecula(String nombre, String[] simbolos, int[] numeros) throws PersistenceException {
 
@@ -89,7 +89,7 @@ public class ServiceImpl extends PersistenceService implements Service {
 
 				// Se calcula el pesoMolecular
 				pesoTotal += numeros[i] * elemento.getPesoAtomico();
-				
+
 				// Se ordenan alfabeticamente los simbolos en la formula
 				if (numeros[i] != 1) {
 					formula[i] = simbolos[i] + numeros[i];
@@ -98,10 +98,10 @@ public class ServiceImpl extends PersistenceService implements Service {
 				}
 
 			}
-			
+
 			Arrays.sort(formula);
 			String formOrdenada = "";
-			for(int i = 0; i < formula.length; i++){
+			for (int i = 0; i < formula.length; i++) {
 				formOrdenada += formula[i];
 			}
 
@@ -120,9 +120,9 @@ public class ServiceImpl extends PersistenceService implements Service {
 			molFinal.setFormula(formOrdenada);
 
 			for (int i = 0; i < simbolos.length; i++) {
-				
+
 				ComposicionPK composicionPK = new ComposicionPK(simbolos[i], molFinal.getId());
-				
+
 				Composicion composicion = new Composicion();
 
 				ElementoDAO elementoDao = new ElementoDAO(em);
@@ -157,7 +157,6 @@ public class ServiceImpl extends PersistenceService implements Service {
 		}
 
 	}
-	
 
 	/**
 	 * Actualiza la información de una molecula mediante el nombre.
@@ -289,7 +288,8 @@ public class ServiceImpl extends PersistenceService implements Service {
 					}
 				}
 
-				// Se comprueba que la formula nueva y la anterior son diferentes
+				// Se comprueba que la formula nueva y la anterior son
+				// diferentes
 				if (formulaNueva != formulaOriginal) {
 					molecula.setFormula(formulaNueva);
 					molecula.setPesoMolecular(pesoAtomNuevo);

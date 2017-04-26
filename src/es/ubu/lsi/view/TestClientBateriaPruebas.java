@@ -1,7 +1,11 @@
 package es.ubu.lsi.view;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.naming.NamingException;
 
@@ -15,10 +19,11 @@ import es.ubu.lsi.view.util.PoolDeConexiones;
 import es.ubu.lsi.service.chemistry.*;
 
 /**
- * Clase TestClient donde se realizan las pruebas correspondientes.
+ * Clase TestClientBateriaPruebas donde se realizan las pruebas correspondientes
+ * al insertado, actualizacion y borrado.
  * 
- * @author Mario Santamaria
- * @author Francisco Saiz
+ * @author Mario Santamaría Arias
+ * @author Francisco Saiz Güemes
  *
  */
 public class TestClientBateriaPruebas {
@@ -43,6 +48,15 @@ public class TestClientBateriaPruebas {
 
 			Service servicio = new ServiceImpl();
 
+			pool = PoolDeConexiones.getInstance();
+			Connection con = null;
+
+			Statement st = null;
+			PreparedStatement pst = null;
+
+			ResultSet rs = null;
+			ResultSet rs1 = null;
+
 			System.out.println("->  Script cargado con la molecula: H2O.\n\n");
 
 			System.out.println("\n-----------------------------------------------------------------");
@@ -50,10 +64,21 @@ public class TestClientBateriaPruebas {
 			System.out.println("-----------------------------------------------------------------\n");
 
 			try {
-				String[] simbolos = { "H", "O" };
+				String[] simbolos = { "O", "H" };
 				int[] nros = { 2, 2 };
 				servicio.insertarMolecula("AguaOxigenada", simbolos, nros);
-				System.out.println("Insertar molecula AguaOxigenada con formula H2O2 se ha realizado con éxito.");
+
+				con = pool.getConnection();
+				st = con.createStatement();
+				rs = st.executeQuery(
+						"SELECT * FROM Moleculas where nombre='AguaOxigenada' AND pesoMolecular=38 AND formula='H2O2'");
+				if (rs.next()) {
+					System.out.println(
+							"Insertar molecula AguaOxigenada con formula H2O2(ordenada alfabeticamente) se ha realizado con éxito.");
+				} else {
+					System.out.println(
+							"Insertar molecula AguaOxigenada con formula H2O2(ordenada alfabeticamente) ·NO· se ha realizado con éxito");
+				}
 
 			} catch (ChemistryException e) {
 				if (e.getError() == ChemistryError.FORMULA_YA_EXISTENTE) {
@@ -64,6 +89,10 @@ public class TestClientBateriaPruebas {
 			} catch (PersistenceException e) {
 				System.out.println("MAL");
 				e.printStackTrace();
+			} finally {
+				pool.close(st);
+				pool.close(rs);
+				pool.close(con);
 			}
 
 			try {
@@ -190,7 +219,16 @@ public class TestClientBateriaPruebas {
 
 			try {
 				servicio.actualizarMolecula(1, "H", 4);
-				System.out.println("ActualizarMolecula mediante Id se ha realizado con éxito.");
+
+				con = pool.getConnection();
+				st = con.createStatement();
+				rs = st.executeQuery("SELECT * FROM Composicion where simbolo='H' AND idMolecula=1 AND nroAtomos=4");
+				if (rs.next()) {
+					System.out.println("ActualizarMolecula mediante Id se ha realizado con éxito.");
+				} else {
+					System.out.println("ActualizarMolecula mediante Id ·NO· se ha realizado con éxito.");
+				}
+
 			} catch (ChemistryException e) {
 				if (e.getError() == ChemistryError.NO_EXISTE_MOLECULA) {
 					System.out.println("ActualizarMolecula mediante Id. OK. ");
@@ -200,6 +238,10 @@ public class TestClientBateriaPruebas {
 			} catch (PersistenceException e) {
 				System.out.println("MAL");
 				e.printStackTrace();
+			} finally {
+				pool.close(st);
+				pool.close(rs);
+				pool.close(con);
 			}
 
 			try {
@@ -237,7 +279,27 @@ public class TestClientBateriaPruebas {
 
 			try {
 				servicio.actualizarMolecula("Agua", "H", 2);
-				System.out.println("ActualizarMolecula mediante Nombre se ha realizado con éxito.");
+
+				con = pool.getConnection();
+				st = con.createStatement();
+				int id = 0;
+				rs1 = st.executeQuery("SELECT id FROM Moleculas where nombre='Agua'");
+				if (rs1.next()) {
+					id = rs1.getInt(1);
+				}
+
+				pst = con
+						.prepareStatement("SELECT * FROM Composicion where simbolo=? AND idMolecula=? AND nroAtomos=?");
+				pst.setString(1, "H");
+				pst.setInt(2, id);
+				pst.setInt(3, 2);
+
+				rs = pst.executeQuery();
+				if (rs.next()) {
+					System.out.println("ActualizarMolecula mediante Nombre se ha realizado con éxito.");
+				} else {
+					System.out.println("ActualizarMolecula mediante Nombre ·NO· se ha realizado con éxito.");
+				}
 
 			} catch (ChemistryException e) {
 				if (e.getError() == ChemistryError.NO_EXISTE_MOLECULA) {
@@ -248,6 +310,12 @@ public class TestClientBateriaPruebas {
 			} catch (PersistenceException e) {
 				System.out.println("MAL");
 				e.printStackTrace();
+			} finally {
+				pool.close(st);
+				pool.close(rs1);
+				pool.close(pst);
+				pool.close(rs);
+				pool.close(con);
 			}
 
 			// Acabamos la bateria de pruebas para el caso Actualizar con la
@@ -261,7 +329,16 @@ public class TestClientBateriaPruebas {
 
 			try {
 				servicio.borrarMolecula(1);
-				System.out.println("Borrar molecula mediante Id se ha realizado con éxito.");
+
+				con = pool.getConnection();
+				st = con.createStatement();
+				rs = st.executeQuery("SELECT * FROM Moleculas where id=1");
+				if (!rs.next()) {
+					System.out.println("Borrar molecula mediante Id se ha realizado con éxito.");
+				} else {
+					System.out.println("Borrar molecula mediante Id ·NO· se ha realizado con éxito.");
+
+				}
 
 			} catch (ChemistryException e) {
 				if (e.getError() == ChemistryError.NO_EXISTE_MOLECULA) {
@@ -272,6 +349,10 @@ public class TestClientBateriaPruebas {
 			} catch (PersistenceException e) {
 				System.out.println("MAL");
 				e.printStackTrace();
+			} finally {
+				pool.close(st);
+				pool.close(rs);
+				pool.close(con);
 			}
 
 			try {
@@ -294,7 +375,18 @@ public class TestClientBateriaPruebas {
 				String[] simbolos = { "H", "O" };
 				int[] nros = { 2, 1 };
 				servicio.insertarMolecula("Agua", simbolos, nros);
-				System.out.println("Insertar molecula se ha realizado con éxito.\n");
+
+				con = pool.getConnection();
+				st = con.createStatement();
+				rs = st.executeQuery(
+						"SELECT * FROM Moleculas where nombre='Agua' AND pesoMolecular=20 AND formula='H2O'");
+				if (rs.next()) {
+					System.out.println(
+							"Insertar molecula AguaOxigenada con formula H2O(ordenada alfabeticamente) se ha realizado con éxito.\n");
+				} else {
+					System.out.println(
+							"Insertar molecula AguaOxigenada con formula H2O(ordenada alfabeticamente) ·NO· se ha realizado con éxito.\n");
+				}
 
 			} catch (ChemistryException e) {
 				if (e.getError() == ChemistryError.FORMULA_YA_EXISTENTE) {
@@ -305,11 +397,23 @@ public class TestClientBateriaPruebas {
 			} catch (PersistenceException e) {
 				System.out.println("MAL");
 				e.printStackTrace();
+			} finally {
+				pool.close(st);
+				pool.close(rs);
+				pool.close(con);
 			}
 
 			try {
 				servicio.borrarMolecula("Agua");
-				System.out.println("Borrar molecula mediante Nombre se ha realizado con éxito.");
+
+				con = pool.getConnection();
+				st = con.createStatement();
+				rs = st.executeQuery("SELECT * FROM Moleculas where nombre='Agua'");
+				if (!rs.next()) {
+					System.out.println("Borrar molecula mediante Nombre se ha realizado con éxito.");
+				} else {
+					System.out.println("Borrar molecula mediante Nombre ·NO· se ha realizado con éxito.");
+				}
 
 			} catch (ChemistryException e) {
 				if (e.getError() == ChemistryError.NO_EXISTE_MOLECULA) {
@@ -320,6 +424,10 @@ public class TestClientBateriaPruebas {
 			} catch (PersistenceException e) {
 				System.out.println("MAL");
 				e.printStackTrace();
+			} finally {
+				pool.close(st);
+				pool.close(rs);
+				pool.close(con);
 			}
 
 			try {
@@ -341,7 +449,6 @@ public class TestClientBateriaPruebas {
 			e1.printStackTrace();
 
 		} finally {
-
 			// Cerramos recursos
 			PersistenceFactorySingleton.close();
 		}

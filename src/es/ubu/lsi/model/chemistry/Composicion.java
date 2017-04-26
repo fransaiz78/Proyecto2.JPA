@@ -2,15 +2,15 @@ package es.ubu.lsi.model.chemistry;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.math.BigDecimal;
-
 
 /**
  * The persistent class for the COMPOSICION database table.
  * 
+ * @author Mario Santamaría Arias
+ * @author Francisco Saiz Güemes
  */
 @Entity
-@NamedQuery(name="Composicion.findAll", query="SELECT c FROM Composicion c")
+@NamedQuery(name = "Composicion.findAll", query = "SELECT c FROM Composicion c")
 public class Composicion implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -19,16 +19,20 @@ public class Composicion implements Serializable {
 
 	private Integer nroatomos;
 
-	//bi-directional many-to-one association to Elemento
-	@MapsId("simbolo")//---------------------------------------------------Falta de realizar el mapeo. Asi terminamos de indicar que ese campo es el mismo.
+	// bi-directional many-to-one association to Elemento
+	@MapsId("simbolo") // ---------------------------------------------------Falta
+						// de realizar el mapeo. Asi terminamos de indicar que
+						// ese campo es el mismo.
 	@ManyToOne
-	@JoinColumn(name="SIMBOLO")
+	@JoinColumn(name = "SIMBOLO")
 	private Elemento elemento;
 
-	//bi-directional many-to-one association to Molecula
-	@MapsId("idMolecula")//---------------------------------------------------Falta de realizar el mapeo. Asi terminamos de indicar que ese campo es el mismo.
+	// bi-directional many-to-one association to Molecula
+	@MapsId("idMolecula") // ---------------------------------------------------Falta
+							// de realizar el mapeo. Asi terminamos de indicar
+							// que ese campo es el mismo.
 	@ManyToOne
-	@JoinColumn(name="IDMOLECULA")
+	@JoinColumn(name = "IDMOLECULA")
 	private Moleculas molecula;
 
 	public Composicion() {
@@ -66,6 +70,5 @@ public class Composicion implements Serializable {
 	public void setMolecula(Moleculas molecula) {
 		this.molecula = molecula;
 	}
-
 
 }
