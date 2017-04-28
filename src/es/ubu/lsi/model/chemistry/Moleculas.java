@@ -31,6 +31,7 @@ public class Moleculas implements Serializable {
 
 	// bi-directional many-to-one association to Composicion
 	@OneToMany(mappedBy = "molecula")
+	@ElementCollection(fetch=FetchType.EAGER)
 	private List<Composicion> composicions;
 
 	public Moleculas() {
